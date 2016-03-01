@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+
+<html lang="en" ng-app="app">
+	<head>
+		<title>JRS</title>
+		
+		<link href='https://fonts.googleapis.com/css?family=Roboto:400,500,700,500italic,700italic,400italic,900,900italic' rel='stylesheet' type='text/css'>
+
+		<link rel="stylesheet" href="bower_components/angular-notify/dist/angular-notify.css">
+		<link rel="stylesheet" href="bower_components/bootswatch-dist/css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/main.css">
+		
+		<link rel="stylesheet" href="bower_components/angular-chart.js/dist/angular-chart.css">
+		<link rel="stylesheet" href="bower_components/angular-ui-select/dist/select.min.css">
+		<link rel="stylesheet" href="bower_components/angular-bootstrap-colorpicker/css/colorpicker.min.css">
+		<link rel="stylesheet" href="bower_components/ng-tags-input/ng-tags-input.min.css">
+
+		<script src="bower_components/jquery/dist/jquery.min.js"></script>
+		<script src="bower_components/bootswatch-dist/js/bootstrap.min.js"></script>
+
+		<script src="bower_components/angular/angular.min.js"></script>
+		<script src="bower_components/angular-route/angular-route.min.js"></script>
+		<script src="bower_components/angular-resource/angular-resource.min.js"></script>
+		<script src="bower_components/angular-local-storage/dist/angular-local-storage.min.js"></script>
+		<script src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+		
+		<script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+		<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+		<script src="bower_components/moment/moment.js"></script>
+		<script src="bower_components/moment/locale/pt-br.js"></script>
+		<script src="bower_components/angular-moment/angular-moment.js"></script>
+		<script src="bower_components/Chart.js/Chart.min.js"></script>
+		<script src="bower_components/angular-chart.js/dist/angular-chart.js"></script>
+		<script src="bower_components/angular-ui-select/dist/select.min.js"></script>
+		<script src="bower_components/spin.js/spin.min.js"></script>
+		<script src="bower_components/angular-spinner/angular-spinner.min.js"></script>
+		<script src="bower_components/angular-smart-table/dist/smart-table.min.js"></script>
+		<script src="bower_components/angular-notify/dist/angular-notify.js"></script>
+		<script src="bower_components/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.min.js"></script>
+		<script src="bower_components/ng-tags-input/ng-tags-input.min.js"></script>
+
+		<script src="js/main.js"></script>
+
+		<script src="app.js"></script>
+		<script src="controllers.js"></script>
+		<script src="services.js"></script>
+		<script src="filters.js"></script>
+		<script src="directives.js"></script>
+	</head>
+	<body>
+    	<span us-spinner spinner-key="spinner"></span>
+		<nav ng-controller="nav_controller" class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container-fluid">
+				<div class="navbar-header">
+                    <a class="navbar-brand" href="#/"><strong>JRS</strong></a>
+				</div>
+				<ul class="nav navbar-nav">
+					<li ng-class="{'active' : is_active('/')}"><a href="#/">Início</a></li>
+				</ul>
+				<ul ng-cloak ng-show="user.get() != null" class="nav navbar-nav navbar-right">
+					<li class="dropdown">
+						<a class="dropdown-toggle" data-toggle="dropdown">{{ user.get().user }} <b class="caret"></b></a>
+						<ul class="dropdown-menu col-xs-12">
+							<li ng-cloak ng-show="user.get().admin"><a href="#/administracao">Administração</a></li>
+							<li ng-cloak ng-show="user.get().admin" class="divider"></li>
+							<li><a href="#/settings">Configurações</a></li>
+							<li><a ng-click="logout()">Sair</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</nav>
+		<div ng-view></div>
+		<hr/>
+		<div class="container">
+			<div class="row" style="margin-bottom: 12px">
+				<div class="col-xs-12 text-center">
+                    <small>&copy; JRS</small>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

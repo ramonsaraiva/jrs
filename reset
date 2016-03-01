@@ -1,0 +1,5 @@
+#!/bin/bash
+flask -a main drop
+flask -a main create
+flask -a main fill
+flask -a main run

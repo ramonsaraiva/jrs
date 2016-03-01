@@ -1,0 +1,156 @@
+<div class="container">
+<div class="row">
+    <div class="col-xs-12">
+        <div class="text-center">
+            <h2>Administração</h2>
+            <hr/>
+        </div>
+
+        <uib-tabset>
+        <uib-tab>
+        <uib-tab-heading><small><span class="glyphicon glyphicon-user"></span></small> Usuários</uib-tab-heading>
+        <table st-safe-src="users" st-table="displayed_users" class="table table-striped">
+            <thead>
+                <tr>
+                    <th st-sort="user" class="col-xs-4">Usuário</th>
+                    <th st-sort="name" class="col-xs-3">Nome</th>
+                    <th st-sort="admin" class="col-xs-1">Administrador</th>
+                    <th st-sort="created_at" class="col-xs-2">Criado em</th>
+                    <th class="col-xs-2">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="user in displayed_users">
+                    <td>
+                        <input ng-cloak ng-show="user.edit" type="text" ng-model="user.user" class="form-control" />
+                        <span ng-cloak ng-hide="user.edit">{{ user.user }}</span>
+                    </td>
+                    <td>
+                        <input ng-cloak ng-show="user.edit" type="text" ng-model="user.name" class="form-control" />
+                        <span ng-cloak ng-hide="user.edit">{{ user.name }}</span>
+                    </td>
+                    <td><span ng-cloak ng-show="user.admin" class="glyphicon glyphicon-star"></span></td>
+                    <td>{{ user.created_at | amTimeAgo }}</td>
+                    <td>
+                        <button ng-show="!user.edit" ng-click="user.edit = true" class="btn btn-sm btn-primary"><span class="glyphicon glyphicon-pencil"></span></button>
+                        <button ng-show="user.edit" ng-click="update_user(user)" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-ok"></span></button>
+                        <button ng-really-message="Você realmente quer deletar o usuário <strong>{{ user.user }}</strong>?" ng-really-click="delete_user(user)" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td><input type="text" ng-model="user.user" class="form-control" placeholder="usuário" /></td>
+                    <td><input type="text" ng-model="user.name" class="form-control" placeholder="nome" /></td>
+                    <td colspan="2">
+                        <input type="password" ng-model="user.password" class="form-control" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" />
+                    </td>
+                    <td>
+                        <button ng-click="create_user()" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-plus"></span></button>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+        </uib-tab>
+        <uib-tab select="load_companies()">
+        <uib-tab-heading><small><span class="glyphicon glyphicon-briefcase"></span></small> Empresas</uib-tab-heading>
+        <table st-safe-src="companies" st-table="displayed_companies" class="table table-striped">
+            <thead>
+                <tr>
+                    <th st-sort="name" class="col-xs-8">Nome da empresa</th>
+                    <th st-sort="created_at" class="col-xs-2">Criada em</th>
+                    <th class="col-xs-2">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="company in displayed_companies">
+                    <td>
+                        <input ng-cloak ng-show="company.edit" type="text" ng-model="company.name" class="form-control" />
+                        <span ng-cloak ng-hide="company.edit">{{ company.name }}</span>
+                    </td>
+                    <td>{{ company.created_at | amTimeAgo }}</td>
+                    <td>
+                        <button ng-show="!company.edit" ng-click="company.edit = true" class="btn btn-sm btn-primary"><span class="glyphicon glyphicon-pencil"></span></button>
+                        <button ng-show="company.edit" ng-click="update_company(company)" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-ok"></span></button>
+                        <button ng-really-message="Você realmente quer deletar a empresa <strong>{{ company.name }}</strong>?" ng-really-click="delete_company(company)" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td><input type="text" ng-model="company.name" class="form-control" placeholder="Nome da empresa" /></td>
+                    <td></td>
+                    <td>
+                        <button ng-click="create_company()" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-plus"></span></button>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+        </uib-tab>
+        <uib-tab select="load_collections()">
+        <uib-tab-heading><small><span class="glyphicon glyphicon-th"></span></small> Coleções</uib-tab-heading>
+        <table st-safe-src="collections" st-table="displayed_collections" class="table table-striped">
+            <thead>
+                <tr>
+                    <th st-sort="company" class="col-xs-4">Empresa</th>
+                    <th st-sort="name" class="col-xs-4">Nome da coleção</th>
+                    <th st-sort="created_at" class="col-xs-2">Criada em</th>
+                    <th class="col-xs-2">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="collection in displayed_collections">
+                    <td>
+                        <ui-select ng-cloak ng-show="collection.edit" ng-model="collection.company" theme="bootstrap">
+                            <ui-select-match class="ui-select-match" placeholder="Empresa">
+                                <span ng-bind="$select.selected.name"></span>
+                            </ui-select-match>
+                            <ui-select-choices class="ui-select-choices" repeat="company.id as company in companies | filter: $select.search">
+                                <span ng-bind-html="company.name | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                        <span ng-cloak ng-hide="collection.edit" ng-repeat="company in companies | filter: {id: collection.company}">{{ company.name }}</span>
+                    </td>
+                    <td>
+                        <input ng-cloak ng-show="collection.edit" type="text" ng-model="collection.name" class="form-control" />
+                        <span ng-cloak ng-hide="collection.edit">{{ collection.name }}</span>
+                    </td>
+                    <td>{{ collection.created_at | amTimeAgo }}</td>
+                    <td>
+                        <button ng-show="!collection.edit" ng-click="collection.edit = true" class="btn btn-sm btn-primary"><span class="glyphicon glyphicon-pencil"></span></button>
+                        <button ng-show="collection.edit" ng-click="update_collection(collection)" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-ok"></span></button>
+                        <button ng-really-message="Você realmente quer deletar a Coleção <strong>{{ collection.name }}</strong>?" ng-really-click="delete_collection(collection)" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>
+                        <ui-select ng-model="collection.company" theme="bootstrap">
+                            <ui-select-match class="ui-select-match" placeholder="Empresa">
+                                <span ng-bind="$select.selected.name"></span>
+                            </ui-select-match>
+                            <ui-select-choices class="ui-select-choices" repeat="company.id as company in companies | filter: $select.search">
+                                <span ng-bind-html="company.name | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </td>
+                    <td><input type="text" ng-model="collection.name" class="form-control" placeholder="Nome da coleção" /></td>
+                    <td></td>
+                    <td>
+                        <button ng-click="create_collection()" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-plus"></span></button>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+        </uib-tab>
+        <uib-tab heading="Produtos">
+
+        </uib-tab>
+        <uib-tab heading="Log">
+
+        </uib-tab>
+        </uib-tabset>
+    </div>
+</div>
+</div>

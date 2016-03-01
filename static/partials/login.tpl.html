@@ -1,0 +1,28 @@
+<div class="container">
+
+<div class="row">
+    <div id="login" class="col-xs-4 col-xs-offset-4 text-center">
+        <form class="form">
+            <h3><strong>JRS</strong></h3>
+            <div ng-cloak ng-show="error" class="alert alert-danger" role="alert"><strong>Informações incorretas</strong></div>
+            <hr/>
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
+                    <input type="text" name="user" ng-model="user" class="form-control" placeholder="login" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
+                    <input type="password" name="password" ng-model="password" class="form-control" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" />
+                </div>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary btn-large" ng-click="login()"></a><strong>Entrar</strong></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>

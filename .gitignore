@@ -1,0 +1,12 @@
+*.py[cod]
+*.so
+*~
+*.vim
+*.bak
+*.swp
+*.log
+!.gitignore
+
+resources
+bower_components
+upload
