@@ -67,6 +67,7 @@ class Company(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64))
     collections = db.relationship('Collection', backref='company', lazy='dynamic', cascade='all, delete-orphan', order_by='Collection.created_at')
+    products = db.relationship('Product', backref='company', lazy='dynamic', cascade='all, delete-orphan', order_by='Product.code')
 
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.datetime.utcnow)
     updated_at = db.Column(db.DateTime(timezone=True), default=datetime.datetime.utcnow)
@@ -94,6 +95,7 @@ class Collection(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     company_id = db.Column(db.Integer, db.ForeignKey('company.id', ondelete='CASCADE'), nullable=False)
     name = db.Column(db.String(64))
+    products = db.relationship('Product', backref='collection', lazy='dynamic', cascade='all, delete-orphan', order_by='Product.code')
 
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.datetime.utcnow)
     updated_at = db.Column(db.DateTime(timezone=True), default=datetime.datetime.utcnow)
@@ -126,7 +128,9 @@ class Product(db.Model):
     name = db.Column(db.String(64))
     grid = db.Column(db.Unicode())
     quantity = db.Column(db.Integer)
-    price = db.Column(db.Numeric(precision=20, scale=0), default=0)
+    price = db.Column(db.Numeric(precision=20, scale=2), default=0)
+    soldout = db.Column(db.Boolean(), default=False)
+    image = db.Column(db.String(128))
 
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.datetime.utcnow)
     updated_at = db.Column(db.DateTime(timezone=True), default=datetime.datetime.utcnow)
@@ -135,37 +139,34 @@ class Product(db.Model):
     def serialize(self):
         return {
             'id': self.id,
-            'company_id': self.company_id,
-            'collection_id': self.company_id,
+            'company': self.company_id,
+            'collection': self.company_id,
             'code': self.code,
             'name': self.name,
             'grid': self.grid,
             'quantity': self.quantity,
             'price': float(self.price),
+            'image': self.image if self.image else None,
             'created_at': self.created_at,
             'updated_at': self.updated_at
         }
 
     def __init__(self, data):
         self.name = data['name']
-        self.company = Company.query.get_or_404(data['company'])
-        self.collection = Company.query.get_or_404(data['collection'])
         self.code = data['code']
         self.name = data['name']
         self.grid = data['grid']
-        self.quantity = data['quantity']
-        self.price = data['price']
+        self.quantity = int(data['quantity'])
+        self.price = float(data['price'])
 
     def touch(self):
         self.updated_at = datetime.datetime.now(pytz.UTC)
 
     def update(self, data):
         self.name = data['name']
-        self.company = Company.query.get_or_404(data['company'])
-        self.collection = Company.query.get_or_404(data['collection'])
         self.code = data['code']
         self.name = data['name']
         self.grid = data['grid']
-        self.quantity = data['quantity']
-        self.price = data['price']
+        self.quantity = int(data['quantity'])
+        self.price = float(data['price'])
         self.touch()

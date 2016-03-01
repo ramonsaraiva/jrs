@@ -45,12 +45,14 @@ controllers.controller('home_controller', function($scope, $location, $filter)
 });
 
 controllers.controller('administration_controller', function($scope,
-            UserResource, CompanyResource, CollectionResource, ProductResource, Notify)
+            UserResource, CompanyResource, CollectionResource, ProductResource,
+            Notify, Upload, Grid)
 {
     $scope.user = {};
     $scope.company = {};
     $scope.collection = {};
     $scope.product = {};
+    $scope.grid = Grid;
 
     /* user crud */
     
@@ -60,6 +62,7 @@ controllers.controller('administration_controller', function($scope,
         user.$save(function(data) {
             $scope.users.push(user);
             Notify.create('Usuário', user.user);
+            $scope.user = {};
         });
     }
     
@@ -91,6 +94,7 @@ controllers.controller('administration_controller', function($scope,
         company.$save(function(data) {
             $scope.companies.push(company);
             Notify.create('Empresa', company.name);
+            $scope.company = {};
         });
     }
 
@@ -120,6 +124,7 @@ controllers.controller('administration_controller', function($scope,
         collection.$save(function(data) {
             $scope.collections.push(collection);
             Notify.create('Coleção', collection.name);
+            $scope.collection = {};
         });
     }
 
@@ -148,28 +153,45 @@ controllers.controller('administration_controller', function($scope,
     {
         var product = new ProductResource($scope.product);
         product.$save(function(data) {
-            $scope.displayed_products.push(product);
+            $scope.products.push(product);
             Notify.create('Produto', product.code);
+            $scope.product = {};
         });
     }
 
-    $scope.update_product = function(index)
+    $scope.update_product = function(product)
     {
-        var product = $scope.displayed_products[index];
+        console.log(product);
+        var index = $scope.products.indexOf(product);
         ProductResource.update({id: product.id}, product, function(data) {
-            $scope.displayed_products[index] = data;
-            $scope.displayed_products[index].edit = false;
+            $scope.products[index].edit = false;
+            $scope.products[index]._grid = Grid.parse(data.grid);
             Notify.update('Produto', product.code);
         });
     }
 
-    $scope.delete_product = function(index)
+    $scope.delete_product = function(product)
     {
-        var product = $scope.displayed_products[index];
+        var index = $scope.products.indexOf(product);
         ProductResource.delete({id: product.id}, function(data) {
-            $scope.displayed_products.splice(index, 1);
+            $scope.products.splice(index, 1);
             Notify.delete('Produto', product.name);
         });
+    }
+
+    $scope.upload_image = function(product, file, error_files)
+    {
+        if (file)
+        {
+            file.upload = Upload.upload({
+                url: '/products/image',
+                data: {file: file}
+            });
+
+            file.upload.then(function(response) {
+                $scope.product.image = response.data.temp;
+            });
+        }
     }
 
     /* load */
@@ -189,6 +211,24 @@ controllers.controller('administration_controller', function($scope,
         CollectionResource.query(function(data) {
             $scope.collections = data.results;
             $scope.displayed_collections = [].concat($scope.collections);
+        });
+    }
+
+    $scope.load_products = function()
+    {
+        if ($scope.companies == null)
+        {
+            $scope.load_companies();
+        }
+
+        if ($scope.collections == null)
+        {
+            $scope.load_collections();
+        }
+
+        ProductResource.query(function(data) {
+            $scope.products = data.results;
+            $scope.displayed_products = [].concat($scope.products);
         });
     }
 

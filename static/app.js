@@ -14,6 +14,7 @@ var app = angular.module('app', [
     'cgNotify',
     'colorpicker.module',
     'ngTagsInput',
+    'ngFileUpload',
     'controllers',
     'services',
     'directives',

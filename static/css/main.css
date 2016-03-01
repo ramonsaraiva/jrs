@@ -4,6 +4,12 @@ body
     font-family: 'Roboto', sans-serif;
 }
 
+.container-fluid.soft
+{
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
 .st-sort-ascent:before{
     content: '\25B2';
 }
@@ -18,45 +24,6 @@ body
     margin-left: 0.1em !important;
 }
 
-tags-input .tags .tag-item
-{
-    background: none !important;
-    font-family: 'Robot', sans-serif !important;
-    border: none !important;
-    margin: 0 important;
-    padding: 0 !important;
-}
-
-.tag {
-  font-size: 14px;
-  padding: .3em .4em .4em;
-  margin: 0 .1em;
-}
-
-.tag a {
-  color: #bbb;
-  cursor: pointer;
-  opacity: 0.6;
-}
-
-.tag a:hover {
-  opacity: 1.0
-}
-
-.tag .remove {
-  vertical-align: bottom;
-  top: 0;
-}
-
-.tag a {
-  margin: 0 0 0 .3em;
-}
-
-.tag a .glyphicon-white {
-  color: #fff;
-  margin-bottom: 2px;
-}
-
 #login
 {
     margin-top: 60px;
@@ -69,4 +36,21 @@ tags-input .tags .tag-item
 #login input
 {
     font-size: 1.2em;
+}
+
+hr.soft
+{
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.table.grid
+{
+}
+
+.table.grid tr, .table.grid th, .table.grid td
+{
+    padding: 0px !important;
+    font-size: 0.9em;
+    font-weight: normal !important;
 }

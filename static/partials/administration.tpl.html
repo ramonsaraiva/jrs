@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container-fluid soft">
 <div class="row">
     <div class="col-xs-12">
         <div class="text-center">
@@ -22,6 +22,7 @@
             <tbody>
                 <tr ng-repeat="user in displayed_users">
                     <td>
+
                         <input ng-cloak ng-show="user.edit" type="text" ng-model="user.user" class="form-control" />
                         <span ng-cloak ng-hide="user.edit">{{ user.user }}</span>
                     </td>
@@ -40,12 +41,19 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td><input type="text" ng-model="user.user" class="form-control" placeholder="usuário" /></td>
+
+                        
+                    <td>
+                        <input type="text" ng-model="user.user" class="form-control" placeholder="usuário" />
+                    </td>
                     <td><input type="text" ng-model="user.name" class="form-control" placeholder="nome" /></td>
                     <td colspan="2">
                         <input type="password" ng-model="user.password" class="form-control" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" />
                     </td>
-                    <td>
+                    <td class="form-inline">
+                        <div class="checkbox">
+                            <label><input type="checkbox" ng-model="user.admin" class="checkbox" /> &nbsp;</label>
+                        </div>
                         <button ng-click="create_user()" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-plus"></span></button>
                     </td>
                 </tr>
@@ -144,8 +152,142 @@
             </tfoot>
         </table>
         </uib-tab>
-        <uib-tab>
+        <uib-tab select="load_products()">
         <uib-tab-heading><small><span class="glyphicon glyphicon-th-list"></span></small> Produtos</uib-tab-heading>
+
+        <table st-safe-src="products" st-table="displayed_products" class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="col-xs-1">Imagem</th>
+                    <th st-sort="company" class="col-xs-2">Empresa</th>
+                    <th st-sort="collection" class="col-xs-2">Coleção</th>
+                    <th st-sort="code" class="col-xs-1">Referência</th>
+                    <th st-sort="name" class="col-xs-2">Nome/Grade</th>
+                    <th st-sort="quantity" class="col-xs-1">Quantidade</th>
+                    <th st-sort="price" class="col-xs-1">Preço</th>
+                    <th class="col-xs-1">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="product in displayed_products">
+                    <td>
+                        <img ng-cloak ng-show="product.image" ng-src="/upload/products/{{ product.image }}" class="img img-rounded" style="max-height: 120px; max-width: 120px" />
+                    <td>
+                        <ui-select ng-cloak ng-show="product.edit" ng-model="product.company" theme="bootstrap">
+                            <ui-select-match class="ui-select-match" placeholder="Empresa">
+                                <span ng-bind="$select.selected.name"></span>
+                            </ui-select-match>
+                            <ui-select-choices class="ui-select-choices" repeat="company.id as company in companies | filter: $select.search">
+                                <span ng-bind-html="company.name | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                        <span ng-cloak ng-hide="product.edit" ng-repeat="company in companies | filter: {id: product.company}">{{ company.name }}</span>
+                    </td>
+                    <td>
+                        <ui-select ng-cloak ng-show="product.edit" ng-model="product.collection" theme="bootstrap">
+                            <ui-select-match class="ui-select-match" placeholder="Coleção">
+                                <span ng-bind="$select.selected.name"></span>
+                            </ui-select-match>
+                            <ui-select-choices class="ui-select-choices" repeat="collection.id as collection in collections | filter: $select.search | filter: {company: product.company}">
+                                <span ng-bind-html="collection.name | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                        <span ng-cloak ng-hide="product.edit" ng-repeat="collection in collections | filter: {id: product.collection}">{{ collection.name }}</span>
+                    </td>
+                    <td>
+                        <input ng-cloak ng-show="product.edit" type="text" ng-model="product.code" class="form-control" />
+                        <span ng-cloak ng-hide="product.edit"><strong>{{ product.code }}</strong></span>
+                    </td>
+                    <td>
+                        <input ng-cloak ng-show="product.edit" type="text" ng-model="product.name" class="form-control" />
+                        <span ng-cloak ng-hide="product.edit"><strong>{{ product.name }}</strong></span>
+                        <hr class="soft">
+                        <textarea ng-cloak ng-show="product.edit" ng-model="product.grid" class="form-control" rows"4" placeholder="Grade">
+                        </textarea>
+                        <span ng-cloak ng-hide="product.edit" ng-init="product._grid = grid.parse(product.grid)">
+                            <table class="table table-striped text-center grid">
+                                <thead>
+                                    <tr>
+                                        <th class="col-xs-4 text-center">Tamanho</th>
+                                        <th class="col-xs-2 text-center" ng-repeat="color in product._grid.colors">{{ color }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="size in product._grid.sizes">
+                                        <td ng-repeat="quantity in size track by $index">{{ quantity }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </span>
+                    </td>
+                    <td>
+                        <input ng-cloak ng-show="product.edit" type="text" ng-model="product.quantity" class="form-control" />
+                        <span ng-cloak ng-hide="product.edit">{{ product.quantity }}</span>
+                    </td>
+                    <td>
+                        <input ng-cloak ng-show="product.edit" type="text" ng-model="product.price" class="form-control" />
+                        <span ng-cloak ng-hide="product.edit">{{ product.price | currency }}</span>
+                    </td>
+                    <td>
+                        <button ng-show="!product.edit" ng-click="product.edit = true" class="btn btn-sm btn-primary"><span class="glyphicon glyphicon-pencil"></span></button>
+                        <button ng-show="product.edit" ng-click="update_product(product)" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-ok"></span></button>
+                        <button ng-really-message="Você realmente quer deletar o Produto <strong>{{ product.name }}</strong>?" ng-really-click="delete_product(product)" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>
+                        <img ng-cloak ng-show="product.image" ng-src="/upload/tmp/{{ product.image }}" class="img img-responsive" />
+                        <button type="file" ngf-select="upload_image(product, $file, $invalidFiles)" accept="image/*" class="btn btn-default">
+                            Selecionar..
+                        </button>
+                    </td>
+                    <td>
+                        <ui-select ng-model="product.company" theme="bootstrap">
+                            <ui-select-match class="ui-select-match" placeholder="Empresa">
+                                <span ng-bind="$select.selected.name"></span>
+                            </ui-select-match>
+                            <ui-select-choices class="ui-select-choices" repeat="company.id as company in companies | filter: $select.search">
+                                <span ng-bind-html="company.name | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </td>
+                    <td>
+                        <ui-select ng-model="product.collection" theme="bootstrap">
+                            <ui-select-match class="ui-select-match" placeholder="Coleção">
+                                <span ng-bind="$select.selected.name"></span>
+                            </ui-select-match>
+                            <ui-select-choices class="ui-select-choices" repeat="collection.id as collection in collections | filter: $select.search | filter: {company: product.company}">
+                                <span ng-bind-html="collection.name | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </td>
+                    <td><input type="text" ng-model="product.code" class="form-control" placeholder="Ref." /></td>
+                    <td>
+                        <input type="text" ng-model="product.name" class="form-control" placeholder="Nome" />
+                        <hr class="soft" />
+                        <textarea ng-model="product.grid" class="form-control" rows"4" placeholder="Grade">
+                        </textarea>
+                    </td>
+                    <td><input type="text" ng-model="product.quantity" class="form-control" placeholder="Qtde." /></td>
+                    <td><input type="text" ng-model="product.price" class="form-control" placeholder="R$" /></td>
+                    <td>
+                        <button ng-click="create_product()" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-plus"></span></button>
+                    </td>
+                </tr>
+            </tfoot>
+            <tfoot>
+                <tr>
+                    <td colspan="8" class="text-center">
+                        <div st-pagination="" st-items-by-page="5" st-displayed-pages="7"></div>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+
+
+
         </uib-tab>
         </uib-tabset>
     </div>

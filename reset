@@ -2,4 +2,4 @@
 flask -a main drop
 flask -a main create
 flask -a main fill
-flask -a main run
+flask -a main run --host=0.0.0.0

@@ -72,6 +72,29 @@ services.factory('Notify', function(notify) {
 	}
 });
 
+services.factory('Grid', function() {
+    return {
+        parse: function(data) {
+            if (data == null)
+            {
+                return null;
+            }
+
+            var grid = {};
+
+            var lines = data.split('\n');
+            grid.colors = lines[0].split(',');
+            grid.sizes = [];
+
+            for (var i = 1; i < lines.length; i++)
+            {
+                grid.sizes.push(lines[i].split(','));
+            }
+
+            return grid;
+        }
+    }
+});
 
 services.factory('UserResource', function($resource) {
 	return $resource('/users/:id', {id: '@id'}, {

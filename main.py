@@ -12,6 +12,8 @@ from resources import Authentication
 from resources import Users
 from resources import Companies
 from resources import Collections
+from resources import Products
+from resources import Images
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -33,6 +35,8 @@ api.add_resource(Authentication, '/authentication')
 api.add_resource(Users, '/users', '/users/<int:id>')
 api.add_resource(Companies, '/companies', '/companies/<int:id>')
 api.add_resource(Collections, '/collections', '/collections/<int:id>')
+api.add_resource(Products, '/products', '/products/<int:id>')
+api.add_resource(Images, '/products/image')
 
 @app.after_request
 def after_reqeust(response):
@@ -48,6 +52,10 @@ def send_template():
 def send_static(path):
     return send_from_directory('static', path)
 
+@app.route('/upload/<path:path>')
+def send_upload(path):
+    return send_from_directory('upload', path)
+
 @app.cli.command()
 def drop():
     db.drop_all()
@@ -58,10 +66,9 @@ def create():
 
 @app.cli.command()
 def fill():
-    u = User({'user': 'ramon', 'password': 'amokvein', 'name': 'Ramon', 'admin': True})
+    u = User({'user': 'ramonsaraiva', 'password': '24810105ever', 'name': 'Ramon Saraiva', 'admin': True})
     db.session.add(u)
     db.session.commit()
-    pass
 
 @app.cli.command()
 def tornado():
