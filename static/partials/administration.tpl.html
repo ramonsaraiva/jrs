@@ -12,9 +12,9 @@
         <table st-safe-src="users" st-table="displayed_users" class="table table-striped">
             <thead>
                 <tr>
-                    <th st-sort="user" class="col-xs-4">Usuário</th>
+                    <th st-sort="user" class="col-xs-3">Usuário</th>
                     <th st-sort="name" class="col-xs-3">Nome</th>
-                    <th st-sort="admin" class="col-xs-1">Administrador</th>
+                    <th st-sort="admin" class="col-xs-2">Administrador</th>
                     <th st-sort="created_at" class="col-xs-2">Criado em</th>
                     <th class="col-xs-2">Ações</th>
                 </tr>
@@ -88,7 +88,7 @@
         </table>
         </uib-tab>
         <uib-tab select="load_collections()">
-        <uib-tab-heading><small><span class="glyphicon glyphicon-th"></span></small> Coleções</uib-tab-heading>
+        <uib-tab-heading><small><span class="glyphicon glyphicon-tag"></span></small> Coleções</uib-tab-heading>
         <table st-safe-src="collections" st-table="displayed_collections" class="table table-striped">
             <thead>
                 <tr>
@@ -144,11 +144,8 @@
             </tfoot>
         </table>
         </uib-tab>
-        <uib-tab heading="Produtos">
-
-        </uib-tab>
-        <uib-tab heading="Log">
-
+        <uib-tab>
+        <uib-tab-heading><small><span class="glyphicon glyphicon-th-list"></span></small> Produtos</uib-tab-heading>
         </uib-tab>
         </uib-tabset>
     </div>
