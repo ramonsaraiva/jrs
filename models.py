@@ -139,8 +139,8 @@ class Product(db.Model):
     def serialize(self):
         return {
             'id': self.id,
-            'company': self.company_id,
-            'collection': self.company_id,
+            'company': self.company.id,
+            'collection': self.collection.id,
             'code': self.code,
             'name': self.name,
             'grid': self.grid,

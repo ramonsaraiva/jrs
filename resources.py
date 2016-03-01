@@ -224,7 +224,7 @@ class Products(Resource):
     @requires_auth
     def get(self, id=None):
         if not id:
-            products = Product.query.order_by(Product.created_at.desc()).all()
+            products = Product.query.order_by(Product.created_at.asc()).all()
             return jsonify(results=[p.serialize for p in products])
         product = Product.query.get_or_404(id)
         return jsonify(product.serialize)
