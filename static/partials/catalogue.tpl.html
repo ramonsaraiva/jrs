@@ -11,15 +11,19 @@
 <div class="row">
     <div class="col-xs-12 text-center">
         <div class="form form-inline">
-            <div class="form-group">
-                <input type="text" ng-model="filter.code" class="form-control" placeholder="Procurar por referência" />
+            <div class="input-group">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+                <input type="text" ng-model="filter.code" class="form-control" placeholder="Procurar no catálogo.." />
             </div>
+            <button class="btn btn-default" ng-show="filter.price == ''" ng-click="filter.price = '+price'"><span class="glyphicon glyphicon-sort-by-attributes"></span></button>
+            <button class="btn btn-default" ng-show="filter.price == '+price'" ng-click="filter.price = '-price'"><span class="glyphicon glyphicon-sort-by-attributes-alt"></span></button>
+            <button class="btn btn-default" ng-show="filter.price == '-price'" ng-click="filter.price = ''"><span class="glyphicon glyphicon-list"></span></button>
         </div>
     </div>
 </div>
 <div class="row">
     <div class="col-xs-12">
-        <div ng-repeat="product in catalogue | filter:{code: filter.code}">
+        <div ng-repeat="product in catalogue | filter:{code: filter.code} | orderBy: filter.price">
             <div class="clearfix visible-lg" ng-if="$index % 3 == 0" style="margin-bottom: 60px;"></div>
             <div class="clearfix visible-md" ng-if="$index % 2 == 0" style="margin-bottom: 60px;"></div>
             <div class="col-lg-4 col-md-6">
