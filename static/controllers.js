@@ -47,6 +47,7 @@ controllers.controller('dashboard_controller', function($scope, $location, $filt
 controllers.controller('catalogue_controller', function($scope, ProductResource, Grid) {
     $scope.grid = Grid;
     $scope.filter = {}
+    $scope.filter.query = '';
     $scope.filter.price = '';
 
     ProductResource.query(function(data) {

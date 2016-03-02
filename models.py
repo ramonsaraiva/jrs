@@ -170,3 +170,25 @@ class Product(db.Model):
         self.quantity = int(data['quantity'])
         self.price = float(data['price'])
         self.touch()
+
+class Customer(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String())
+    corporate_name = db.Column(db.String())
+    cnpj = db.Column(db.String(14))
+    ie = db.Column(db.String(9))
+    
+    # region
+    # city
+    address = db.Column(db.String())
+
+    company_phone = db.Column(db.String())
+    mobile_phone = db.Column(db.String())
+    other_phone = db.Column(db.String())
+
+    primary_email = db.Column(db.String())
+    secondary_email = db.Column(db.String())
+
+    created_by = db.Column(db.Integer, db.ForeignKey('User.id'), nullable=False)
+    created_at = db.Column(db.DateTime(timezone=True), default=datetime.datetime.utcnow)
+    updated_at = db.Column(db.DateTime(timezone=True), default=datetime.datetime.utcnow)

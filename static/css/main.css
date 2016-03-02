@@ -44,6 +44,11 @@ hr.soft
     margin-bottom: 8px;
 }
 
+.panel-heading .stats
+{
+    font-size: 2.4em;
+}
+
 .table.grid
 {
 }

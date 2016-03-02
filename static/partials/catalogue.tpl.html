@@ -11,9 +11,9 @@
 <div class="row">
     <div class="col-xs-12 text-center">
         <div class="form form-inline">
-            <div class="input-group">
+            <div class="input-group col-xs-4">
                 <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
-                <input type="text" ng-model="filter.code" class="form-control" placeholder="Procurar no catálogo.." />
+                <input type="text" ng-model="filter.query" class="form-control" placeholder="Procurar no catálogo.." />
             </div>
             <button class="btn btn-default" ng-show="filter.price == ''" ng-click="filter.price = '+price'"><span class="glyphicon glyphicon-sort-by-attributes"></span></button>
             <button class="btn btn-default" ng-show="filter.price == '+price'" ng-click="filter.price = '-price'"><span class="glyphicon glyphicon-sort-by-attributes-alt"></span></button>
@@ -23,7 +23,7 @@
 </div>
 <div class="row">
     <div class="col-xs-12">
-        <div ng-repeat="product in catalogue | filter:{code: filter.code} | orderBy: filter.price">
+        <div ng-repeat="product in catalogue | propsFilter:{code: filter.query, name: filter.query} | orderBy: filter.price">
             <div class="clearfix visible-lg" ng-if="$index % 3 == 0" style="margin-bottom: 60px;"></div>
             <div class="clearfix visible-md" ng-if="$index % 2 == 0" style="margin-bottom: 60px;"></div>
             <div class="col-lg-4 col-md-6">
