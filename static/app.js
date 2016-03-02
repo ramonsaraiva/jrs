@@ -24,12 +24,16 @@ var app = angular.module('app', [
 app.config(['$routeProvider', '$provide', '$httpProvider', function($routeProvider, $provide, $httpProvider) {
     $routeProvider
         .when('/', {
-            templateUrl: 'partials/home.tpl.html',
-            controller: 'home_controller'
+            templateUrl: 'partials/dashboard.tpl.html',
+            controller: 'dashboard_controller'
         })
         .when('/login', {
             templateUrl: 'partials/login.tpl.html',
             controller: 'login_controller'
+        })
+        .when('/catalogo', {
+            templateUrl: 'partials/catalogue.tpl.html',
+            controller: 'catalogue_controller'
         })
         .when('/administracao', {
             templateUrl: 'partials/administration.tpl.html',

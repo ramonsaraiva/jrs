@@ -54,3 +54,17 @@ hr.soft
     font-size: 0.9em;
     font-weight: normal !important;
 }
+
+.catalogue-item
+{
+}
+
+.catalogue-item .media-body h4
+{
+}
+
+img.img-catalogue
+{
+    max-height: 160px;
+    max-width: 160px;
+}

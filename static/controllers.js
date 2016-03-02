@@ -40,8 +40,16 @@ controllers.controller('login_controller', function ($scope, $location, $http, U
     }
 });
 
-controllers.controller('home_controller', function($scope, $location, $filter) 
+controllers.controller('dashboard_controller', function($scope, $location, $filter) 
 {
+});
+
+controllers.controller('catalogue_controller', function($scope, ProductResource, Grid) {
+    $scope.grid = Grid;
+
+    ProductResource.query(function(data) {
+        $scope.catalogue = data.results;
+    });
 });
 
 controllers.controller('administration_controller', function($scope,

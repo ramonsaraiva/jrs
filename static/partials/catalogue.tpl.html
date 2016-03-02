@@ -1,0 +1,54 @@
+<div class="container-fluid soft">
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="text-center">
+            <h2>Catálogo</h2>
+        </div>
+        <hr/>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12 text-center">
+        <div class="form form-inline">
+            <div class="form-group">
+                <input type="text" ng-model="filter.code" class="form-control" placeholder="Procurar por referência" />
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div ng-repeat="product in catalogue | filter:{code: filter.code}">
+            <div class="clearfix visible-lg" ng-if="$index % 3 == 0" style="margin-bottom: 60px;"></div>
+            <div class="clearfix visible-md" ng-if="$index % 2 == 0" style="margin-bottom: 60px;"></div>
+            <div class="col-lg-4 col-md-6">
+                <div class="media catalogue-item">
+                    <div class="media-left">
+                        <img class="media-object img-rounded img-catalogue" ng-src="upload/products/{{ product.image }}">
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading">{{ product.name }}</h4>
+                        <p>
+                        <span class="pull-left">{{ product.code }}</span>
+                        <span class="pull-right">{{ product.price | currency }}</span>
+                            <table class="table table-striped text-center grid" ng-init="product._grid = grid.parse(product.grid)">
+                                <thead>
+                                    <tr>
+                                        <th class="col-xs-4 text-center">Tamanho</th>
+                                        <th class="col-xs-2 text-center" ng-repeat="color in product._grid.colors">{{ color }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="size in product._grid.sizes">
+                                        <td ng-repeat="quantity in size track by $index">{{ quantity }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

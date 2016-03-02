@@ -167,6 +167,17 @@
                     <th st-sort="price" class="col-xs-1">Preço</th>
                     <th class="col-xs-1">Ações</th>
                 </tr>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th>
+                        <input st-search="code" placeholder="Referência" class="input-sm form-control" />
+                    </th>
+                    <th>
+                        <input st-search="name" placeholder="Nome" class="input-sm form-control" />
+                    </th>
+                </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="product in displayed_products">
