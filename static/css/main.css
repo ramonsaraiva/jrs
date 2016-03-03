@@ -1,6 +1,6 @@
 body
 {
-    padding-top: 60px;
+    padding-top: 80px;
     font-family: 'Roboto', sans-serif;
 }
 
@@ -73,3 +73,4 @@ img.img-catalogue
     max-height: 160px;
     max-width: 160px;
 }
+

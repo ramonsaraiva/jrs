@@ -108,6 +108,26 @@ controllers.controller('create_customer_controller', function($scope, $filter, $
     }
 });
 
+controllers.controller('create_order_controller', function($scope, $filter, $location,
+            User, CompanyResource, CustomerResource) {
+    $scope.user = User;
+    $scope.now = new Date();
+    $scope.order = {};
+    $scope.order.freight = 'CIF';
+
+    $scope.companies = [];
+    $scope.customers = [];
+
+    CompanyResource.query(function(data) {
+        $scope.companies = data.results;
+    });
+
+    CustomerResource.query(function(data) {
+        $scope.customers = data.results;
+    });
+
+});
+
 controllers.controller('administration_controller', function($scope,
             UserResource, CompanyResource, CollectionResource, ProductResource,
             Notify, Upload, Grid)

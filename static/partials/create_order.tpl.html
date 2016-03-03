@@ -1,0 +1,109 @@
+<div class="container-fluid soft">
+<div class="row">
+    <div class="col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="#/pedidos">Pedidos</a></li>
+            <li><a href="#/pedidos/criar">Novo pedido</a></li>
+            <li class="pull-right"><small><span class="glyphicon glyphicon-user"></span> {{ user.get().name }}</small></li>
+            <li class="pull-right"><small><span class="glyphicon glyphicon-menu-hamburger"></span> Aguardando confirmação</small></li>
+            <li class="pull-right"><small><span class="glyphicon glyphicon-calendar"></span> {{ now | amDateFormat:'DD/MM/YY' }}</small></li>
+        </ol>
+    </div>
+</div>
+<div class="form">
+    <div class="row">
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="company">Empresa</label>
+                    <ui-select ng-model="order.company" theme="bootstrap" id="company">
+                        <ui-select-match class="ui-select-match" placeholder="Empresa">
+                            <span ng-bind="$select.selected.name"></span>
+                        </ui-select-match>
+                        <ui-select-choices class="ui-select-choices" repeat="company.id as company in companies | filter: $select.search">
+                            <span ng-bind-html="company.name | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="company">Cliente</label>
+                    <ui-select ng-model="order.customer" theme="bootstrap" id="customer">
+                        <ui-select-match class="ui-select-match" placeholder="Cliente">
+                            <span ng-bind="$select.selected.name"></span>
+                        </ui-select-match>
+                        <ui-select-choices class="ui-select-choices" repeat="customer.id as customer in customers | filter: $select.search">
+                            <span ng-bind-html="customer.name | highlight: $select.search"></span> - 
+                            <span ng-bind-html="customer.corporate_name | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-4">
+            <div class="form-group">
+                <label for="delivery">Entrega</label>
+                <input type="text" ng-model="order.delivery" class="form-control" id="entrega" >
+            </div>
+        </div>
+        <div class="col-xs-1">
+            <div class="form-group">
+                <label for="d1">D1</label>
+                <input type="text" ng-model="order.d1" class="form-control" id="d1">
+            </div>
+        </div>
+        <div class="col-xs-1">
+            <div class="form-group">
+                <label for="d2">D2</label>
+                <input type="text" ng-model="order.d2" class="form-control" id="d2">
+            </div>
+        </div>
+        <div class="col-xs-1">
+            <div class="form-group">
+                <label for="d3">D3</label>
+                <input type="text" ng-model="order.d3" class="form-control" id="d3">
+            </div>
+        </div>
+        <div class="col-xs-1">
+            <div class="form-group">
+                <label for="d4">D4</label>
+                <input type="text" ng-model="order.d4" class="form-control" id="d4">
+            </div>
+        </div>
+        <div class="col-xs-4">
+            <div class="form-group">
+                <label for="payment">Pagamento</label>
+                <input type="text" ng-model="order.payment" class="form-control" id="payment" >
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-3 col-xs-offset-3">
+            <div class="pull-right">
+                <label class="radio-inline">
+                    <input type="radio" ng-model="order.freight" name="freight" value="CIF" id="freight"> CIF
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" ng-model="order.freight" name="freight" value="FOB" id="freight"> FOB
+                </label>
+            </div>
+        </div>
+        <div class="col-xs-3">
+            <div class="form-group">
+                <input type="text" ng-model="order.shipping" ng-disabled="order.freight == 'CIF'" class="form-control" id="shipping" placeholder="Transportadora">
+            </div>
+        </div>
+        <div class="col-xs-3">
+            <div class="form-group">
+                <input type="text" ng-model="order.shipping_phone" ng-disabled="order.freight == 'CIF'" class="form-control" id="shipping_phone" placeholder="Telefone transportadora" >
+            </div>
+        </div>
+    </div>
+    <hr/>
+    <div class="row text-center">
+        <button class="btn btn-success"><strong>Confirmar pedido</strong></button>
+        <button class="btn btn-default"><strong>Limpar</strong></button>
+    </div>
+</div>
