@@ -35,6 +35,22 @@ app.config(['$routeProvider', '$provide', '$httpProvider', function($routeProvid
             templateUrl: 'partials/catalogue.tpl.html',
             controller: 'catalogue_controller'
         })
+        .when('/clientes', {
+            templateUrl: 'partials/customers.tpl.html',
+            controller: 'customers_controller'
+        })
+        .when('/clientes/criar', {
+            templateUrl: 'partials/create_customer.tpl.html',
+            controller: 'create_customer_controller'
+        })
+        .when('/pedidos', {
+            templateurl: 'partials/orders.tpl.html',
+            controller: 'orders_controller'
+        })
+        .when('/pedidos/criar', {
+            templateUrl: 'partials/create_order.tpl.html',
+            controller: 'create_order_controller'
+        })
         .when('/administracao', {
             templateUrl: 'partials/administration.tpl.html',
             controller: 'administration_controller'

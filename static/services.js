@@ -143,3 +143,39 @@ services.factory('ProductResource', function($resource) {
 		}
 	});
 });
+
+services.factory('CityResource', function($resource) {
+	return $resource('/cities/:id', {id: '@id'}, {
+		query: {
+			method: 'get',
+			isarray: false
+		},
+		update: {
+			method: 'put'
+		}
+	});
+});
+
+services.factory('CEPResource', function($resource) {
+	return $resource('/cep/:id', {id: '@id'}, {
+		query: {
+			method: 'get',
+			isarray: false
+		},
+		update: {
+			method: 'put'
+		}
+	});
+});
+
+services.factory('CustomerResource', function($resource) {
+	return $resource('/customers/:id', {id: '@id'}, {
+		query: {
+			method: 'get',
+			isarray: false
+		},
+		update: {
+			method: 'put'
+		}
+	});
+});

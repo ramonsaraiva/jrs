@@ -40,7 +40,7 @@ controllers.controller('login_controller', function ($scope, $location, $http, U
     }
 });
 
-controllers.controller('dashboard_controller', function($scope, $location, $filter) 
+controllers.controller('dashboard_controller', function($scope) 
 {
 });
 
@@ -53,6 +53,59 @@ controllers.controller('catalogue_controller', function($scope, ProductResource,
     ProductResource.query(function(data) {
         $scope.catalogue = data.results;
     });
+});
+
+controllers.controller('customers_controller', function($scope, CustomerResource)
+{
+    $scope.customers = [];
+
+    CustomerResource.query(function(data) {
+        console.log(data.results);
+        $scope.customers = data.results;
+    });
+});
+
+controllers.controller('create_customer_controller', function($scope, $filter, $location,
+            CityResource, CEPResource, CustomerResource, Notify)
+{
+    $scope.saving = false;
+    $scope.customer = {};
+
+    CityResource.query(function(data) {
+        $scope.cities = data.results;
+    });
+
+    $scope.create_customer = function()
+    {
+        $scope.saving = true;
+
+        var customer = new CustomerResource($scope.customer);
+        customer.$save(function(data) {
+            $scope.saving = false;
+            Notify.create('Cliente', data.name);
+            $location.path('/clientes');
+        });
+    }
+
+    $scope.request_cep = function()
+    {
+        if (!$scope.customer.cep)
+        {
+            return;
+        }
+
+        CEPResource.get({id: $scope.customer.cep}, function(data) {
+            var city = $filter('filter')($scope.cities, {name: data.city});
+
+            if (city)
+            {
+                $scope.customer.city = city[0].id;
+            }
+
+            $scope.customer.address = data.address;
+            $scope.customer.district = data.district;
+        });
+    }
 });
 
 controllers.controller('administration_controller', function($scope,

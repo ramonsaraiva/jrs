@@ -60,9 +60,23 @@
                 <div ng-cloak ng-show="user.get() != null">
                     <ul class="nav navbar-nav">
                         <li ng-class="{'active' : is_active('/')}"><a href="#/">Dashboard</a></li>
-                        <li ng-class="{'active' : is_active('/catalogo')}"><a href="#/catalogo">Catálogo</a></li>
-                        <li ng-class="{'active' : is_active('/clientes')}"><a href="#/clientes">Clientes</a></li>
-                        <li ng-class="{'active' : is_active('/pedidos')}"><a href="#/pedidos">Pedidos</a></li>
+                        <li ng-class="{'active' : is_active('/catalogo')}" class="dropdown">
+                            <a href="#/catalogo">Catálogo</a>
+                        </li>
+                        <li ng-class="{'active' : is_active('/clientes')}" class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="">Clientes <b class="caret"></b></a>
+                            <ul class="dropdown-menu col-xs-12">
+                                <li><a href="#/clientes">Ver clientes</a></li>
+                                <li><a href="#/clientes/criar">Novo cliente</a></li>
+                            </ul>
+                        </li>
+                        <li ng-class="{'active' : is_active('/pedidos')}" class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="">Pedidos <b class="caret"></b></a>
+                            <ul class="dropdown-menu col-xs-12">
+                                <li><a href="#/pedidos">Ver pedidos</a></li>
+                                <li><a href="#/pedidos/criar">Novo Pedido</a></li>
+                            </ul>
+                        </li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li class="dropdown">

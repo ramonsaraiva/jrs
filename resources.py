@@ -1,10 +1,12 @@
 import os
 import datetime
 import uuid
+import json
 
 import pytz
 import werkzeug
 import magic
+import requests
 
 from flask import jsonify
 from flask import abort
@@ -22,6 +24,12 @@ from models import User
 from models import Company
 from models import Collection
 from models import Product
+from models import State
+from models import City
+from models import Customer
+from models import OrderStatus
+from models import Order
+from models import OrderItem
 
 UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'upload')
 
@@ -288,3 +296,70 @@ class Images(Resource):
         temp = '{0}.{1}'.format(str(uuid.uuid4()), get_format(_file.filename))
         _file.save(os.path.join(UPLOAD_FOLDER, 'tmp', temp))
         return jsonify(temp=temp)
+
+class States(Resource):
+    @requires_auth
+    def get(self):
+        states = State.query.order_by('State.code').all()
+        return jsonify(results=[r.serialize for r in states])
+
+class Cities(Resource):
+    @requires_auth
+    def get(self):
+        cities = City.query.order_by('City.name').all()
+        return jsonify(results=[c.serialize for c in cities])
+
+class CEP(Resource):
+    @requires_auth
+    def get(self, cep):
+        request = requests.get('http://apps.widenet.com.br/busca-cep/api/cep/{0}.json'.format(cep))
+
+        cep_json = {}
+        try:
+            cep_json = json.loads(request.text)
+        except:
+            pass
+
+        return jsonify(cep_json)
+
+class Customers(Resource):
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('name', type=unicode, location='json', required=True)
+        self.reqparse.add_argument('corporate_name', type=unicode, location='json', required=False)
+        self.reqparse.add_argument('cnpj', type=str, location='json', required=False)
+        self.reqparse.add_argument('ie', type=str, location='json', required=False)
+
+        self.reqparse.add_argument('city', type=int, location='json', required=False)
+        self.reqparse.add_argument('address', type=unicode, location='json', required=False)
+        self.reqparse.add_argument('cep', type=str, location='json', required=False)
+        self.reqparse.add_argument('district', type=unicode, location='json', required=False)
+        self.reqparse.add_argument('number', type=int, location='json', required=False)
+        self.reqparse.add_argument('complement', type=str, location='json', required=False)
+
+        self.reqparse.add_argument('contact', type=unicode, location='json', required=False)
+        self.reqparse.add_argument('company_phone', type=str, location='json', required=False)
+        self.reqparse.add_argument('mobile_phone', type=str, location='json', required=False)
+        self.reqparse.add_argument('other_phone', type=str, location='json', required=False)
+        self.reqparse.add_argument('primary_email', type=str, location='json', required=False)
+        self.reqparse.add_argument('secondary_email', type=str, location='json', required=False)
+
+    @requires_auth
+    def get(self):
+        customers = Customer.query.order_by(Customer.name).all()
+        return jsonify(results=[c.serialize for c in customers])
+
+    @requires_auth
+    def post(self):
+        args = self.reqparse.parse_args()
+        customer = Customer(args)
+
+        if args['city']:
+            city = City.query.get_or_404(args['city'])
+            customer.city = city
+
+        customer.user = g.user
+
+        db.session.add(customer)
+        db.session.commit()
+        return jsonify(customer.serialize)

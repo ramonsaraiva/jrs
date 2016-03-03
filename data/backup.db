@@ -15,7 +15,7 @@ SET search_path = public, pg_catalog;
 -- Data for Name: company; Type: TABLE DATA; Schema: public; Owner: jrs
 --
 
-COPY company (id, name, created_at, updated_at) FROM stdin;
+COPY "company" (id, name, created_at, updated_at) FROM stdin;
 1	Liang Pantufas e Chinelos	2016-03-01 21:43:18.540712-03	2016-03-01 21:43:18.540719-03
 \.
 

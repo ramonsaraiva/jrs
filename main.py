@@ -7,6 +7,9 @@ from flask.ext.restful import Api
 
 from models import db
 from models import User
+from models import State
+from models import City
+from models import OrderStatus
 
 from resources import Authentication
 from resources import Users
@@ -14,6 +17,10 @@ from resources import Companies
 from resources import Collections
 from resources import Products
 from resources import Images
+from resources import States
+from resources import Cities
+from resources import CEP
+from resources import Customers
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -37,6 +44,9 @@ api.add_resource(Companies, '/companies', '/companies/<int:id>')
 api.add_resource(Collections, '/collections', '/collections/<int:id>')
 api.add_resource(Products, '/products', '/products/<int:id>')
 api.add_resource(Images, '/products/image')
+api.add_resource(Cities, '/cities')
+api.add_resource(CEP, '/cep/<int:cep>')
+api.add_resource(Customers, '/customers')
 
 @app.after_request
 def after_reqeust(response):
@@ -66,8 +76,18 @@ def create():
 
 @app.cli.command()
 def fill():
-    u = User({'user': 'ramonsaraiva', 'password': '24810105ever', 'name': 'Ramon Saraiva', 'admin': True})
-    db.session.add(u)
+    #u = User({'user': 'ramonsaraiva', 'password': '24810105ever', 'name': 'Ramon Saraiva', 'admin': True})
+    #db.session.add(u)
+    #db.session.commit()
+
+    s = State({'code': 'RS', 'name': 'Rio Grande do Sul'})
+    db.session.add(s)
+
+    f = open('data/cities.json', 'r')
+    cities = json.load(f)['cities']
+    for city in cities:
+        c = City(city)
+        s.cities.append(c)
     db.session.commit()
 
 @app.cli.command()
