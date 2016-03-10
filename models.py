@@ -311,22 +311,44 @@ class OrderItem(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     order_id = db.Column(db.ForeignKey('order.id'), nullable=False)
+    product_id = db.Column(db.ForeignKey('product.id'), nullable=False)
+
+    product = db.relationship('Product', backref='orders')
+    quantity = db.Column(db.Integer, default=1, nullable=False)
+    total = db.Column(db.Numeric(precision=20, scale=2), default=0)
 
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.datetime.utcnow)
     updated_at = db.Column(db.DateTime(timezone=True), default=datetime.datetime.utcnow)
 
     def __init__(self, data):
-        return
+        self.quantity = data['quantity']
+        self.total = float(data['total'])
+
+    @property
+    def serialize(self):
+        return {
+            'id': self.id,
+            'product': self.product.serialize,
+            'quantity': self.quantity,
+            'total': self.total
+        }
+
+    def touch(self):
+        self.updated_at = datetime.datetime.now(pytz.UTC)
+
 
 class Order(db.Model):
     __tablename__ = 'order'
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    company_id = db.Column(db.Integer, db.ForeignKey('company.id'), nullable=False)
     customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'), nullable=False)
     orderstatus_id = db.Column(db.Integer, db.ForeignKey('order_status.id'), nullable=False)
 
     user = db.relationship('User', backref='orders')
+    company = db.relationship('Company', backref='orders')
+    customer_id = db.relationship('Customer', backref='orders')
     orderstatus = db.relationship('OrderStatus', backref='orders')
 
     deliver = db.Column(db.String())
@@ -346,3 +368,15 @@ class Order(db.Model):
 
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.datetime.utcnow)
     updated_at = db.Column(db.DateTime(timezone=True), default=datetime.datetime.utcnow)
+
+    def __init__(self, data):
+        self.deliver = data['deliver']
+        self.payment = data['payment']
+        self.d1 = data['d1']
+        self.d2 = data['d2']
+        self.d3 = data['d3']
+        self.d4 = data['d4']
+        self.freight = data['freight']
+        self.shipping = data['shipping']
+        self.shipping_phone = data['shipping_phone']
+        self.obs = data['obs']

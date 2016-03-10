@@ -363,3 +363,31 @@ class Customers(Resource):
         db.session.add(customer)
         db.session.commit()
         return jsonify(customer.serialize)
+
+class Orders(Resource):
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('company', type=int, location='json', required=True)
+        self.reqparse.add_argument('customer', type=int, location='json', required=True)
+
+        self.reqparse.add_argument('deliver', type=unicode, location='json', required=False)
+        self.reqparse.add_argument('payment', type=unicode, location='json', required=False)
+        self.reqparse.add_argument('d1', type=int, location='json', required=False, defaul=0)
+        self.reqparse.add_argument('d2', type=int, location='json', required=False, defaul=0)
+        self.reqparse.add_argument('d3', type=int, location='json', required=False, defaul=0)
+        self.reqparse.add_argument('d4', type=int, location='json', required=False, defaul=0)
+
+        self.reqparse.add_argument('freight', type=unicode, location='json', required=True)
+        self.reqparse.add_argument('shipping', type=unicode, location='json', required=False)
+        self.reqparse.add_argument('shipping_phone', type=unicode, location='json', required=False)
+
+        self.reqparse.add_argument('obs', type=unicode, location='json', required=False)
+
+    @requires_auth
+    def post(self):
+        args = self.reqparse.parse_args()
+        company = Company.query.get_or_404(args['company'])
+        customer = Customer.query.get_or_404(args['customer'])
+        order_status = OrderStatus.query.get_or_404(1)
+
+        order = Order(args)

@@ -83,6 +83,18 @@ def fill():
     s = State({'code': 'RS', 'name': 'Rio Grande do Sul'})
     db.session.add(s)
 
+    oss = [
+        'Pré pedido',
+        'Enviado',
+        'Faturado parcial',
+        'Faturado'
+    ]
+
+    for os in oss:
+        order_status = OrderStatus(os)
+        db.session.add(order_status)
+        db.session.commit()
+
     f = open('data/cities.json', 'r')
     cities = json.load(f)['cities']
     for city in cities:

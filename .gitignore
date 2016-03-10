@@ -7,6 +7,5 @@
 *.log
 !.gitignore
 
-resources
 bower_components
 upload
