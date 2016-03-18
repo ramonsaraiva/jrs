@@ -372,10 +372,10 @@ class Orders(Resource):
 
         self.reqparse.add_argument('deliver', type=unicode, location='json', required=False)
         self.reqparse.add_argument('payment', type=unicode, location='json', required=False)
-        self.reqparse.add_argument('d1', type=int, location='json', required=False, defaul=0)
-        self.reqparse.add_argument('d2', type=int, location='json', required=False, defaul=0)
-        self.reqparse.add_argument('d3', type=int, location='json', required=False, defaul=0)
-        self.reqparse.add_argument('d4', type=int, location='json', required=False, defaul=0)
+        self.reqparse.add_argument('d1', type=int, location='json', required=False, default=0)
+        self.reqparse.add_argument('d2', type=int, location='json', required=False, default=0)
+        self.reqparse.add_argument('d3', type=int, location='json', required=False, default=0)
+        self.reqparse.add_argument('d4', type=int, location='json', required=False, default=0)
 
         self.reqparse.add_argument('freight', type=unicode, location='json', required=True)
         self.reqparse.add_argument('shipping', type=unicode, location='json', required=False)
@@ -391,3 +391,11 @@ class Orders(Resource):
         order_status = OrderStatus.query.get_or_404(1)
 
         order = Order(args)
+        order.user = g.user
+        order.company = company
+        order.customer = customer
+        order.status = order_status
+
+        db.session.add(order)
+        db.session.commit()
+        return jsonify(order.serialize)

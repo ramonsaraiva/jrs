@@ -10,6 +10,7 @@
         </ol>
     </div>
 </div>
+{{ order }}
 <div class="form">
     <div class="row">
             <div class="col-xs-6">
@@ -27,7 +28,7 @@
             </div>
             <div class="col-xs-6">
                 <div class="form-group">
-                    <label for="company">Cliente</label>
+                    <label for="customer">Cliente</label>
                     <ui-select ng-model="order.customer" theme="bootstrap" id="customer">
                         <ui-select-match class="ui-select-match" placeholder="Cliente">
                             <span ng-bind="$select.selected.name"></span>
@@ -103,7 +104,7 @@
     </div>
     <hr/>
     <div class="row text-center">
-        <button class="btn btn-success"><strong>Confirmar pedido</strong></button>
+        <button class="btn btn-success" ng-click="open_order()"><strong>Abrir pedido</strong></button>
         <button class="btn btn-default"><strong>Limpar</strong></button>
     </div>
 </div>

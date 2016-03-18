@@ -109,7 +109,7 @@ controllers.controller('create_customer_controller', function($scope, $filter, $
 });
 
 controllers.controller('create_order_controller', function($scope, $filter, $location,
-            User, CompanyResource, CustomerResource) {
+            User, CompanyResource, CustomerResource, OrderResource) {
     $scope.user = User;
     $scope.now = new Date();
     $scope.order = {};
@@ -120,11 +120,21 @@ controllers.controller('create_order_controller', function($scope, $filter, $loc
 
     CompanyResource.query(function(data) {
         $scope.companies = data.results;
+        console.log(data.results);
     });
 
     CustomerResource.query(function(data) {
         $scope.customers = data.results;
+        console.log(data.results);
     });
+
+    $scope.open_order = function() 
+    {
+        var order = new OrderResource($scope.order);
+        order.$save(function(data) {
+            console.log(data);
+        });
+    }
 
 });
 

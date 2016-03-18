@@ -179,3 +179,15 @@ services.factory('CustomerResource', function($resource) {
 		}
 	});
 });
+
+services.factory('OrderResource', function($resource) {
+	return $resource('/orders/:id', {id: '@id'}, {
+		query: {
+			method: 'get',
+			isarray: false
+		},
+		update: {
+			method: 'put'
+		}
+	});
+});

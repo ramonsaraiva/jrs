@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import json
 
 from flask import Flask
@@ -21,6 +23,7 @@ from resources import States
 from resources import Cities
 from resources import CEP
 from resources import Customers
+from resources import Orders
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -47,6 +50,7 @@ api.add_resource(Images, '/products/image')
 api.add_resource(Cities, '/cities')
 api.add_resource(CEP, '/cep/<int:cep>')
 api.add_resource(Customers, '/customers')
+api.add_resource(Orders, '/orders')
 
 @app.after_request
 def after_reqeust(response):

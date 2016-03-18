@@ -272,6 +272,7 @@ class Customer(db.Model):
     @property
     def serialize(self):
         return {
+            'id': self.id,
             'name': self.name,
             'corporate_name': self.corporate_name,
             'cnpj': self.cnpj,
@@ -348,8 +349,8 @@ class Order(db.Model):
 
     user = db.relationship('User', backref='orders')
     company = db.relationship('Company', backref='orders')
-    customer_id = db.relationship('Customer', backref='orders')
-    orderstatus = db.relationship('OrderStatus', backref='orders')
+    customer = db.relationship('Customer', backref='orders')
+    status = db.relationship('OrderStatus', backref='orders')
 
     deliver = db.Column(db.String())
     payment = db.Column(db.String())
@@ -380,3 +381,24 @@ class Order(db.Model):
         self.shipping = data['shipping']
         self.shipping_phone = data['shipping_phone']
         self.obs = data['obs']
+
+    @property
+    def serialize(self):
+        return {
+            'id': self.id,
+            'company': self.company.serialize,
+            'customer': self.customer.serialize,
+            'status': self.status.serialize,
+            'deliver': self.deliver,
+            'payment': self.payment,
+            'd1': float(self.d1),
+            'd2': float(self.d2),
+            'd3': float(self.d3),
+            'd4': float(self.d4),
+            'freight': self.freight,
+            'shipping': self.shipping,
+            'shipping_phone': self.shipping_phone,
+            'obs': self.obs,
+            'created_at': self.created_at,
+            'updated_at': self.updated_at
+        }
